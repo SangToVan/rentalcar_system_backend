@@ -23,7 +23,7 @@ public class Complaint {
     private Integer id;
 
     @ManyToOne(targetEntity = Booking.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "booking_id", referencedColumnName = "user_id")
+    @JoinColumn(name = "booking_id", referencedColumnName = "booking_id")
     private Booking booking;
 
     private String description;

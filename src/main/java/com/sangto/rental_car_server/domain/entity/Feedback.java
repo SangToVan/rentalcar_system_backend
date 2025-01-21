@@ -1,5 +1,6 @@
 package com.sangto.rental_car_server.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,8 +31,9 @@ public class Feedback {
     @JoinColumn(name = "car_id", referencedColumnName = "car_id")
     private Car car;
 
-    @OneToOne(targetEntity = Booking.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "booking_id", referencedColumnName = "user_id")
+    @JsonIgnore
+    @OneToOne(targetEntity = Booking.class, fetch = FetchType.EAGER, orphanRemoval = false)
+    @JoinColumn(name = "booking_id")
     private Booking booking;
 
     private Double rating;
