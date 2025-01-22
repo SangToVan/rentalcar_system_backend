@@ -33,7 +33,7 @@ public class Car {
     private User car_owner;
 
     private String plate_number;
-    private String additional_functions;
+    private String name;
     private String brand;
     private String model;
     private String color;
@@ -41,11 +41,16 @@ public class Car {
     private Integer seat_number;
 
     @Enumerated(EnumType.STRING)
+    private ECarTransmission car_transmission;
+
+    @Enumerated(EnumType.STRING)
     private EFuelType fuel_type;
 
     private Float fuel_consumption;
     private Integer mileage;
+    private String additional_functions;
     private String description;
+    private String terms_of_use;
 
     @ManyToOne(
             targetEntity = Location.class,
@@ -58,9 +63,6 @@ public class Car {
 
     private String status;
 
-    @Enumerated(EnumType.STRING)
-    private ECarTransmission car_transmission;
-
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")
     private Date created_at;
@@ -70,7 +72,6 @@ public class Car {
     private Date updated_at;
 
     private Double rating;
-    private String terms_of_use;
 
     @JsonIgnore
     @OneToMany(

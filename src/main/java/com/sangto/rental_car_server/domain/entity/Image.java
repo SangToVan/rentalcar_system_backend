@@ -22,7 +22,7 @@ public class Image {
     @Column(name = "image_id")
     private Integer id;
 
-    private String name;
+    private String image_name;
 
     private String image_url;
 
