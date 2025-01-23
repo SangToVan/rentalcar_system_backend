@@ -1,7 +1,7 @@
 package com.sangto.rental_car_server.domain.dto.user;
 
 import com.sangto.rental_car_server.constant.TimeFormatConstant;
-import com.sangto.rental_car_server.domain.dto.location.LocationDTO;
+import com.sangto.rental_car_server.domain.dto.location.LocationRequestDTO;
 import com.sangto.rental_car_server.domain.enums.EUserRole;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -18,7 +18,7 @@ public record UserDetailResponseDTO(
         LocalDateTime birthday,
         String citizen_id,
         String phone_number,
-        LocationDTO location,
+        LocationRequestDTO location,
         String driving_license,
         Double wallet,
         Date created_at,

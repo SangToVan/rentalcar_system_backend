@@ -1,8 +1,7 @@
 package com.sangto.rental_car_server.domain.dto.car;
 
-import com.sangto.rental_car_server.domain.dto.image.ImageResponseDTO;
 import com.sangto.rental_car_server.domain.dto.image.UpdImageRequestDTO;
-import com.sangto.rental_car_server.domain.dto.location.LocationDTO;
+import com.sangto.rental_car_server.domain.dto.location.LocationRequestDTO;
 
 import java.util.List;
 
@@ -13,7 +12,7 @@ public record UpdCarRequestDTO(
         List<UpdImageRequestDTO> images,
         String description,
         String terms_of_use,
-        LocationDTO location,
+        LocationRequestDTO location,
         Double price_per_day
 ) {
 }

@@ -1,13 +1,8 @@
 package com.sangto.rental_car_server.domain.dto.car;
 
-import com.sangto.rental_car_server.domain.dto.location.LocationDTO;
-import com.sangto.rental_car_server.domain.entity.Location;
+import com.sangto.rental_car_server.domain.dto.location.LocationRequestDTO;
 import com.sangto.rental_car_server.domain.enums.ECarTransmission;
 import com.sangto.rental_car_server.domain.enums.EFuelType;
-import jakarta.persistence.*;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.util.Date;
 
 public record AddCarRequestDTO(
         String plate_number,
@@ -25,7 +20,7 @@ public record AddCarRequestDTO(
         String[] images,
         String description,
         String terms_of_use,
-        LocationDTO location,
+        LocationRequestDTO location,
         Double price_per_day,
         Boolean availability,
         String status) {
