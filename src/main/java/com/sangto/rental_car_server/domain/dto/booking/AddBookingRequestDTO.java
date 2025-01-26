@@ -1,7 +1,9 @@
 package com.sangto.rental_car_server.domain.dto.booking;
 
 import com.sangto.rental_car_server.domain.enums.EPaymentMethod;
+import lombok.Builder;
 
+@Builder
 public record AddBookingRequestDTO(
         Integer car_id,
         Integer customer_id,

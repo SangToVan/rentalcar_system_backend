@@ -3,11 +3,13 @@ package com.sangto.rental_car_server.domain.dto.feedback;
 import com.sangto.rental_car_server.constant.TimeFormatConstant;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import lombok.Builder;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.List;
 
+@Builder
 public record FeedbackResponseDTO(
         String avatar,
         String username,

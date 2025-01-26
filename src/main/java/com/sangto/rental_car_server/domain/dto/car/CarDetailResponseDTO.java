@@ -4,10 +4,12 @@ import com.sangto.rental_car_server.domain.dto.image.ImageResponseDTO;
 import com.sangto.rental_car_server.domain.dto.location.LocationRequestDTO;
 import com.sangto.rental_car_server.domain.enums.ECarTransmission;
 import com.sangto.rental_car_server.domain.enums.EFuelType;
+import lombok.Builder;
 
 import java.util.Date;
 import java.util.List;
 
+@Builder
 public record CarDetailResponseDTO(
         Integer id,
         String plate_number,

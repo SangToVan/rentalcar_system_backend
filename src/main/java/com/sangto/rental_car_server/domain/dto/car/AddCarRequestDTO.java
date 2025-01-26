@@ -3,7 +3,9 @@ package com.sangto.rental_car_server.domain.dto.car;
 import com.sangto.rental_car_server.domain.dto.location.LocationRequestDTO;
 import com.sangto.rental_car_server.domain.enums.ECarTransmission;
 import com.sangto.rental_car_server.domain.enums.EFuelType;
+import lombok.Builder;
 
+@Builder
 public record AddCarRequestDTO(
         String plate_number,
         String name,

@@ -5,7 +5,9 @@ import com.sangto.rental_car_server.annotation.PasswordMatch;
 import com.sangto.rental_car_server.annotation.StrongPassword;
 import com.sangto.rental_car_server.domain.enums.EUserRole;
 import jakarta.validation.constraints.Pattern;
+import lombok.Builder;
 
+@Builder
 @PasswordMatch
 public record AddUserRequestDTO(
     @StrongPassword

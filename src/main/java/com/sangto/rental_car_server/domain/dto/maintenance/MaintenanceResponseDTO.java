@@ -1,5 +1,8 @@
 package com.sangto.rental_car_server.domain.dto.maintenance;
 
+import lombok.Builder;
+
+@Builder
 public record MaintenanceResponseDTO(
         Integer car_id,
         String created_at,

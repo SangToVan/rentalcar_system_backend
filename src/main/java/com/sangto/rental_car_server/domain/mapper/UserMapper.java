@@ -1,6 +1,6 @@
 package com.sangto.rental_car_server.domain.mapper;
 
-import com.sangto.rental_car_server.domain.dto.auth.RegisterResponseDTO;
+import com.sangto.rental_car_server.domain.dto.auth.RegisterUserResponseDTO;
 import com.sangto.rental_car_server.domain.dto.user.AddUserRequestDTO;
 import com.sangto.rental_car_server.domain.dto.user.UpdUserRequestDTO;
 import com.sangto.rental_car_server.domain.dto.user.UserDetailResponseDTO;
@@ -9,7 +9,7 @@ import com.sangto.rental_car_server.domain.entity.User;
 
 public interface UserMapper {
 
-    RegisterResponseDTO toRegisterResponseDTO(User entity);
+    RegisterUserResponseDTO toRegisterUserResponseDTO(User entity);
 
     UserDetailResponseDTO toUserDetailResponseDTO(User entity);
 

@@ -4,7 +4,9 @@ import com.sangto.rental_car_server.domain.dto.car.CarDetailResponseDTO;
 import com.sangto.rental_car_server.domain.entity.User;
 import com.sangto.rental_car_server.domain.enums.EBookingStatus;
 import com.sangto.rental_car_server.domain.enums.EPaymentMethod;
+import lombok.Builder;
 
+@Builder
 public record BookingDetailResponseDTO(
         Integer booking_id,
         CarDetailResponseDTO car_detail,

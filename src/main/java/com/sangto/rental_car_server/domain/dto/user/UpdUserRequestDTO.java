@@ -5,10 +5,12 @@ import com.sangto.rental_car_server.domain.dto.location.LocationRequestDTO;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.Pattern;
+import lombok.Builder;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
+@Builder
 public record UpdUserRequestDTO(
         String username,
         @Temporal(TemporalType.DATE) @DateTimeFormat(pattern = TimeFormatConstant.DATE_FORMAT)

@@ -1,9 +1,11 @@
 package com.sangto.rental_car_server.domain.dto.booking;
 
 import com.sangto.rental_car_server.domain.enums.EBookingStatus;
+import lombok.Builder;
 
 import java.util.List;
 
+@Builder
 public record BookingResponseDTO(
         Integer booking_id,
         Integer car_id,
