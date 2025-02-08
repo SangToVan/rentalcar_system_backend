@@ -1,0 +1,110 @@
+package com.sangto.rental_car_server.service.impl;
+
+import com.sangto.rental_car_server.constant.MetaConstant;
+import com.sangto.rental_car_server.domain.dto.car.AddCarRequestDTO;
+import com.sangto.rental_car_server.domain.dto.car.CarDetailResponseDTO;
+import com.sangto.rental_car_server.domain.dto.car.CarResponseDTO;
+import com.sangto.rental_car_server.domain.dto.car.UpdCarRequestDTO;
+import com.sangto.rental_car_server.domain.dto.meta.MetaRequestDTO;
+import com.sangto.rental_car_server.domain.dto.meta.MetaResponseDTO;
+import com.sangto.rental_car_server.domain.dto.meta.SortingDTO;
+import com.sangto.rental_car_server.domain.entity.Car;
+import com.sangto.rental_car_server.domain.entity.User;
+import com.sangto.rental_car_server.domain.mapper.CarMapper;
+import com.sangto.rental_car_server.exception.AppException;
+import com.sangto.rental_car_server.repository.CarRepository;
+import com.sangto.rental_car_server.repository.UserRepository;
+import com.sangto.rental_car_server.response.MetaResponse;
+import com.sangto.rental_car_server.response.Response;
+import com.sangto.rental_car_server.service.CarService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+public class CarServiceImpl implements CarService {
+
+    private final UserRepository userRepo;
+    private final CarRepository carRepo;
+    private final CarMapper carMapper;
+
+
+    @Override
+    public Car verifyCarOwner(Integer ownerId, Integer carId) {
+        Optional<Car> carOpt = carRepo.findById(carId);
+        if (carOpt.isEmpty()) throw new AppException("This car is not existed");
+        Car car = carOpt.get();
+        if (car.getCar_owner().getId() != ownerId) throw new AppException("This car is not owned");
+        return car;
+    }
+
+    @Override
+    public MetaResponse<MetaResponseDTO, List<CarResponseDTO>> getListCarByOwner(MetaRequestDTO requestDTO, Integer ownerId) {
+        Optional<User> userOpt = userRepo.findById(ownerId);
+        if (userOpt.isEmpty()) throw new AppException("This owner is not existed");
+
+        Sort sort = requestDTO.sortDir().equals(MetaConstant.Sorting.DEFAULT_DIRECTION)
+                ? Sort.by(requestDTO.sortField()).ascending()
+                : Sort.by(requestDTO.sortField()).descending();
+        Pageable pageable = PageRequest.of(requestDTO.currentPage(), requestDTO.pageSize(), sort);
+        Page<Car> page = requestDTO.keyword() == null
+                ? carRepo.getListCarByOwner(ownerId, pageable)
+                : carRepo.getListCarByOwnerWithKeyword(ownerId, requestDTO.keyword(), pageable);
+
+        if (page.getContent().isEmpty()) throw new AppException("List car is empty");
+        List<CarResponseDTO> list = page.getContent().stream()
+                .map(carMapper::toCarResponseDTO)
+                .toList();
+
+        return MetaResponse.successfulResponse(
+                "Get list car success",
+                MetaResponseDTO.builder()
+                        .totalItems((int) page.getTotalElements())
+                        .totalPages(page.getTotalPages())
+                        .currentPage(requestDTO.currentPage())
+                        .pageSize(requestDTO.pageSize())
+                        .sorting(SortingDTO.builder()
+                                .sortField(requestDTO.sortField())
+                                .sortDir(requestDTO.sortDir())
+                                .build())
+                        .build(), list
+        );
+    }
+
+    @Override
+    public Response<CarDetailResponseDTO> getCarDetail(Integer carId) {
+        return null;
+    }
+
+    @Override
+    public Response<CarDetailResponseDTO> addCar(Integer ownerId, AddCarRequestDTO requestDTO) {
+        return null;
+    }
+
+    @Override
+    public Response<CarDetailResponseDTO> updateCar(Integer id, UpdCarRequestDTO requestDTO) {
+        return null;
+    }
+
+    @Override
+    public MetaResponse<MetaResponseDTO, List<CarResponseDTO>> getAllCars(MetaRequestDTO requestDTO) {
+        return null;
+    }
+
+    @Override
+    public Response<String> changeStatus(Integer carId) {
+        return null;
+    }
+
+    @Override
+    public MetaResponse<MetaResponseDTO, List<CarResponseDTO>> searchCar(String address, String startTime, String endTime, MetaRequestDTO requestDTO) {
+        return null;
+    }
+}
