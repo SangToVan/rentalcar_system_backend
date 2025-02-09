@@ -1,9 +1,6 @@
 package com.sangto.rental_car_server.domain.mapper.impl;
 
-import com.sangto.rental_car_server.domain.dto.car.AddCarRequestDTO;
-import com.sangto.rental_car_server.domain.dto.car.CarDetailResponseDTO;
-import com.sangto.rental_car_server.domain.dto.car.CarResponseDTO;
-import com.sangto.rental_car_server.domain.dto.car.UpdCarRequestDTO;
+import com.sangto.rental_car_server.domain.dto.car.*;
 import com.sangto.rental_car_server.domain.entity.Car;
 import com.sangto.rental_car_server.domain.mapper.CarMapper;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +20,12 @@ public class CarMapperImpl implements CarMapper {
     }
 
     @Override
-    public Car addCarRequestDTOoCarEntity(AddCarRequestDTO requestDTO) {
+    public CarDetailResponseForOwnerDTO toCarDetailResponseForOwnerDTO(Car entity) {
+        return null;
+    }
+
+    @Override
+    public Car addCarRequestDTOtoCarEntity(AddCarRequestDTO requestDTO) {
         return null;
     }
 

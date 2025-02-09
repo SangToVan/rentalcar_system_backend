@@ -1,15 +1,13 @@
 package com.sangto.rental_car_server.service.impl;
 
 import com.sangto.rental_car_server.constant.MetaConstant;
-import com.sangto.rental_car_server.domain.dto.car.AddCarRequestDTO;
-import com.sangto.rental_car_server.domain.dto.car.CarDetailResponseDTO;
-import com.sangto.rental_car_server.domain.dto.car.CarResponseDTO;
-import com.sangto.rental_car_server.domain.dto.car.UpdCarRequestDTO;
+import com.sangto.rental_car_server.domain.dto.car.*;
 import com.sangto.rental_car_server.domain.dto.meta.MetaRequestDTO;
 import com.sangto.rental_car_server.domain.dto.meta.MetaResponseDTO;
 import com.sangto.rental_car_server.domain.dto.meta.SortingDTO;
 import com.sangto.rental_car_server.domain.entity.Car;
 import com.sangto.rental_car_server.domain.entity.User;
+import com.sangto.rental_car_server.domain.enums.EUserRole;
 import com.sangto.rental_car_server.domain.mapper.CarMapper;
 import com.sangto.rental_car_server.exception.AppException;
 import com.sangto.rental_car_server.repository.CarRepository;
@@ -80,22 +78,72 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public Response<CarDetailResponseDTO> getCarDetail(Integer carId) {
-        return null;
+        Optional<Car> carOpt = carRepo.findById(carId);
+        if (carOpt.isEmpty()) throw new AppException("This car is not existed");
+        return Response.successfulResponse(
+                "Get detail car successful", carMapper.toCarDetailResponseDTO(carOpt.get())
+        );
+    }
+
+    @Override
+    public Response<CarDetailResponseForOwnerDTO> getCarDetailForOwner(Integer carId) {
+        Optional<Car> carOpt = carRepo.findById(carId);
+        if (carOpt.isEmpty()) throw new AppException("This car is not existed");
+        return Response.successfulResponse(
+                "Get detail car successful", carMapper.toCarDetailResponseForOwnerDTO(carOpt.get())
+        );
     }
 
     @Override
     public Response<CarDetailResponseDTO> addCar(Integer ownerId, AddCarRequestDTO requestDTO) {
-        return null;
+        Optional<User> ownerOpt = userRepo.findUserByIdAndUserType(ownerId, EUserRole.OWNER);
+        if (ownerOpt.isEmpty()) throw new AppException("This owner is not existed");
+
+        Car newCar = carMapper.addCarRequestDTOtoCarEntity(requestDTO);
+        newCar.setCar_owner(ownerOpt.get());
+
+        Car savedCar = carRepo.save(newCar);
+        return Response.successfulResponse("Add new car successful", carMapper.toCarDetailResponseDTO(savedCar));
     }
 
     @Override
     public Response<CarDetailResponseDTO> updateCar(Integer id, UpdCarRequestDTO requestDTO) {
-        return null;
+        Optional<Car> oldCar = carRepo.findById(id);
+        if (oldCar.isEmpty()) throw new AppException("This car is not existed");
+        Car newCar = carMapper.updateCarRequestDTOtoCarEntity(oldCar.get(), requestDTO);
+        newCar.setCar_owner(oldCar.get().getCar_owner());
+        Car savedCar = carRepo.save(newCar);
+
+        return Response.successfulResponse("Update car successful", carMapper.toCarDetailResponseDTO(savedCar));
     }
 
     @Override
     public MetaResponse<MetaResponseDTO, List<CarResponseDTO>> getAllCars(MetaRequestDTO requestDTO) {
-        return null;
+        Sort sort = requestDTO.sortDir().equalsIgnoreCase(MetaConstant.Sorting.DEFAULT_DIRECTION)
+                ? Sort.by(requestDTO.sortField()).ascending()
+                : Sort.by(requestDTO.sortField()).descending();
+        Pageable pageable = PageRequest.of(requestDTO.currentPage(), requestDTO.pageSize(), sort);
+        Page<Car> page = carRepo.findAll(pageable);
+
+        if (page.isEmpty()) throw new AppException("List car is empty");
+
+        List<CarResponseDTO> carList = page.getContent().stream()
+                .map(carMapper::toCarResponseDTO)
+                .toList();
+
+        return MetaResponse.successfulResponse(
+                "Get list car success",
+                MetaResponseDTO.builder()
+                        .totalItems((int) page.getTotalElements())
+                        .totalPages(page.getTotalPages())
+                        .currentPage(requestDTO.currentPage())
+                        .pageSize(requestDTO.pageSize())
+                        .sorting(SortingDTO.builder()
+                                .sortField(requestDTO.sortField())
+                                .sortDir(requestDTO.sortDir())
+                                .build())
+                        .build(), carList
+        );
     }
 
     @Override

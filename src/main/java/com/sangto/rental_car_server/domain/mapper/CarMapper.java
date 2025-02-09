@@ -1,9 +1,6 @@
 package com.sangto.rental_car_server.domain.mapper;
 
-import com.sangto.rental_car_server.domain.dto.car.AddCarRequestDTO;
-import com.sangto.rental_car_server.domain.dto.car.CarDetailResponseDTO;
-import com.sangto.rental_car_server.domain.dto.car.CarResponseDTO;
-import com.sangto.rental_car_server.domain.dto.car.UpdCarRequestDTO;
+import com.sangto.rental_car_server.domain.dto.car.*;
 import com.sangto.rental_car_server.domain.entity.Car;
 
 public interface CarMapper {
@@ -12,7 +9,9 @@ public interface CarMapper {
 
     CarDetailResponseDTO toCarDetailResponseDTO(Car entity);
 
-    Car addCarRequestDTOoCarEntity(AddCarRequestDTO requestDTO);
+    CarDetailResponseForOwnerDTO toCarDetailResponseForOwnerDTO(Car entity);
+
+    Car addCarRequestDTOtoCarEntity(AddCarRequestDTO requestDTO);
 
     Car updateCarRequestDTOtoCarEntity(Car old_car, UpdCarRequestDTO requestDTO);
 }

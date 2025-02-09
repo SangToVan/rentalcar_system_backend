@@ -1,9 +1,6 @@
 package com.sangto.rental_car_server.service;
 
-import com.sangto.rental_car_server.domain.dto.car.AddCarRequestDTO;
-import com.sangto.rental_car_server.domain.dto.car.CarDetailResponseDTO;
-import com.sangto.rental_car_server.domain.dto.car.CarResponseDTO;
-import com.sangto.rental_car_server.domain.dto.car.UpdCarRequestDTO;
+import com.sangto.rental_car_server.domain.dto.car.*;
 import com.sangto.rental_car_server.domain.dto.meta.MetaRequestDTO;
 import com.sangto.rental_car_server.domain.dto.meta.MetaResponseDTO;
 import com.sangto.rental_car_server.domain.entity.Car;
@@ -19,6 +16,8 @@ public interface CarService {
     MetaResponse<MetaResponseDTO, List<CarResponseDTO>> getListCarByOwner(MetaRequestDTO requestDTO, Integer ownerId);
 
     Response<CarDetailResponseDTO> getCarDetail(Integer carId);
+
+    Response<CarDetailResponseForOwnerDTO> getCarDetailForOwner(Integer carId);
 
     Response<CarDetailResponseDTO> addCar(Integer ownerId, AddCarRequestDTO requestDTO);
 
