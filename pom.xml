@@ -78,6 +78,12 @@
 			<artifactId>nimbus-jose-jwt</artifactId>
 			<version>9.40</version>
 		</dependency>
+		<!--Cloudinary-->
+		<dependency>
+			<groupId>com.cloudinary</groupId>
+			<artifactId>cloudinary-http44</artifactId>
+			<version>1.38.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
