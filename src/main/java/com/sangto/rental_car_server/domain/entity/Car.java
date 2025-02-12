@@ -1,6 +1,7 @@
 package com.sangto.rental_car_server.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sangto.rental_car_server.domain.enums.ECarStatus;
 import com.sangto.rental_car_server.domain.enums.ECarTransmission;
 import com.sangto.rental_car_server.domain.enums.EFuelType;
 import jakarta.persistence.*;
@@ -61,7 +62,8 @@ public class Car {
     private Double price_per_day;
     private Boolean availability;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private ECarStatus status;
 
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")

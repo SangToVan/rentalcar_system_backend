@@ -3,6 +3,7 @@ package com.sangto.rental_car_server.domain.dto.user;
 import com.sangto.rental_car_server.constant.TimeFormatConstant;
 import com.sangto.rental_car_server.domain.dto.location.LocationResponseDTO;
 import com.sangto.rental_car_server.domain.enums.EUserRole;
+import com.sangto.rental_car_server.domain.enums.EUserStatus;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.Builder;
@@ -25,7 +26,7 @@ public record UserDetailResponseDTO(
         Double wallet,
         Date created_at,
         Date updated_at,
-        String status,
+        EUserStatus status,
         String avatar,
         EUserRole role
 ) {

@@ -2,6 +2,7 @@ package com.sangto.rental_car_server.domain.dto.car;
 
 import com.sangto.rental_car_server.domain.dto.image.ImageResponseDTO;
 import com.sangto.rental_car_server.domain.dto.location.LocationRequestDTO;
+import com.sangto.rental_car_server.domain.enums.ECarStatus;
 import com.sangto.rental_car_server.domain.enums.ECarTransmission;
 import com.sangto.rental_car_server.domain.enums.EFuelType;
 import lombok.Builder;
@@ -30,7 +31,7 @@ public record CarDetailResponseDTO(
         LocationRequestDTO location,
         Double price_per_day,
         Boolean availability,
-        String status,
+        ECarStatus status,
         Double rating,
         Date created_at,
         Date updated_at

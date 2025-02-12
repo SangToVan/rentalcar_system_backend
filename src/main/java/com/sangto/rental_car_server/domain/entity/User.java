@@ -3,6 +3,7 @@ package com.sangto.rental_car_server.domain.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sangto.rental_car_server.constant.TimeFormatConstant;
 import com.sangto.rental_car_server.domain.enums.EUserRole;
+import com.sangto.rental_car_server.domain.enums.EUserStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -64,7 +65,10 @@ public class User implements UserDetails {
 
     private String avatar;
     private String avatarPublicId;
-    private String status;
+
+    @Enumerated(EnumType.STRING)
+    private EUserStatus status;
+
     private Double wallet;
 
     @JsonIgnore

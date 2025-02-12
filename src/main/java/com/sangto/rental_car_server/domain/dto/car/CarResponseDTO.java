@@ -2,6 +2,7 @@ package com.sangto.rental_car_server.domain.dto.car;
 
 import com.sangto.rental_car_server.domain.dto.image.ImageResponseDTO;
 import com.sangto.rental_car_server.domain.dto.location.LocationRequestDTO;
+import com.sangto.rental_car_server.domain.enums.ECarStatus;
 import lombok.Builder;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public record CarResponseDTO(
         String model,
         LocationRequestDTO location,
         Double rating,
-        String status,
+        ECarStatus status,
         Double price_per_day,
         List<ImageResponseDTO> images
 ) {
