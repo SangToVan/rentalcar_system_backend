@@ -16,7 +16,7 @@ public interface CarRepository extends JpaRepository<Car, Integer> {
 
     Optional<Car> getCarById(Integer id);
 
-    Optional<Car> searchCar(String address, String start_time, String end_time);
+    Page<Car> searchCar(String address, String start_time, String end_time, Pageable pageable);
 
     Optional<Car> checkScheduleCar(Integer id, String start_time, String end_time);
 

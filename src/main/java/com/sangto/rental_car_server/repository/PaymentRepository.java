@@ -1,4 +1,17 @@
 package com.sangto.rental_car_server.repository;
 
-public interface PaymentRepository {
+import com.sangto.rental_car_server.domain.entity.Payment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface PaymentRepository extends JpaRepository<Payment, Integer> {
+
+    Page<Payment> getListByUserId(Integer userId, String startDate, String endDate, Pageable pageable);
+
+    List<Payment> getListByUserId(Integer userId);
 }
