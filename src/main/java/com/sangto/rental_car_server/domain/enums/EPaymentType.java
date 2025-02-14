@@ -6,12 +6,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public enum EPaymentType {
-    TOP_UP("Top up"),
-    WITHDRAW("Withdraw"),
-    PAY_DEPOSIT("Pay deposit"),
-    RECEIVE_DEPOSIT("Receive deposit"),
-    REFUND_DEPOSIT("Refund deposit"),
-    OFFSET_FINAL_PAYMENT("Offset final payment");
+    RENTAL_FEE("Rental Fee"),
+    SERVICE_FEE("Service Fee"),
+    TRANSFER_TO_OWNER("Transfer to Owner"),
+    REFUND("Refund"),
+    ADDITIONAL_FEE("Additional Fee");
 
     private final String title;
 }

@@ -1,8 +1,8 @@
 package com.sangto.rental_car_server.domain.entity;
 
-import com.sangto.rental_car_server.domain.enums.EPaymentMethod;
 import com.sangto.rental_car_server.domain.enums.ETransactionStatus;
 import com.sangto.rental_car_server.domain.enums.EPaymentType;
+import com.sangto.rental_car_server.domain.enums.ETransactionType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,32 +13,31 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 
 @Entity
-@Table(name = "payment")
+@Table(name = "transaction")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Payment {
+public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "payment_id")
+    @Column(name = "transaction_id")
     private Integer id;
 
-    @ManyToOne(targetEntity = Booking.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "booking_id", referencedColumnName = "booking_id")
-    private Booking booking;
+    @ManyToOne(targetEntity = Wallet.class, fetch = FetchType.EAGER)
+    @JoinColumn(name = "wallet_id", referencedColumnName = "wallet_id")
+    private Wallet wallet;
 
     private Double amount;
 
     @Enumerated(EnumType.STRING)
-    private EPaymentType payment_type;
-
-    @Enumerated(EnumType.STRING)
-    private EPaymentMethod payment_method;
+    private ETransactionType transaction_type;
 
     @Enumerated(EnumType.STRING)
     private ETransactionStatus status;
+
+    private String description;
 
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")

@@ -29,5 +29,7 @@ public interface CarService {
 
     Response<String> toggleCarStatus(Integer carId);
 
+    Response<String> verifiedCar(Integer carId);
+
     MetaResponse<MetaResponseDTO, List<CarResponseDTO>> searchCar(String address, String startTime, String endTime, MetaRequestDTO requestDTO);
 }

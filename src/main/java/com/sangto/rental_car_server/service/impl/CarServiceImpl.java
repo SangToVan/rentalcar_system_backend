@@ -229,15 +229,32 @@ public class CarServiceImpl implements CarService {
             }
             bookingRepo.saveAll(futureBookings);
         }
-        String message = "Stop renting car successful";
+        String message = "";
         if (car.getStatus() == ECarStatus.ACTIVE) {
             car.setStatus(ECarStatus.INACTIVE);
+            message = "Stop renting car successful";
         } else if (car.getStatus() == ECarStatus.INACTIVE) {
             car.setStatus(ECarStatus.ACTIVE);
             message = "Re-renting car successful";
         }
         carRepo.save(car);
         return Response.successfulResponse(message);
+    }
+
+    @Override
+    public Response<String> verifiedCar(Integer carId) {
+
+        Optional<Car> findCar = carRepo.findById(carId);
+        if (findCar.isEmpty()) throw new AppException("This car is not existed");
+
+        Car car = findCar.get();
+        if (car.getStatus() == ECarStatus.ACTIVE) {
+            throw new AppException("Cannot authorize car");
+        } else if (car.getStatus() == ECarStatus.UNVERIFIED) {
+            car.setStatus(ECarStatus.INACTIVE);
+        }
+        carRepo.save(car);
+        return Response.successfulResponse("Authorize car successful");
     }
 
     @Override

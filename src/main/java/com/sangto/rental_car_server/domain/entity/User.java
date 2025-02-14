@@ -69,7 +69,9 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private EUserStatus status;
 
-    private Double wallet;
+    @OneToOne
+    @JoinColumn(name = "wallet_id", nullable = false)
+    private Wallet wallet;
 
     @JsonIgnore
     @OneToMany(
