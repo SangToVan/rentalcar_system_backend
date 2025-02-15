@@ -6,12 +6,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 public interface PaymentRepository extends JpaRepository<Payment, Integer> {
 
     Page<Payment> getListByUserId(Integer userId, String startDate, String endDate, Pageable pageable);
 
-    List<Payment> getListByUserId(Integer userId);
+    Page<Payment> getListByBookingId(Integer bookingId, Pageable pageable);
 }

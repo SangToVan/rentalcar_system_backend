@@ -48,7 +48,8 @@ public class Booking  {
 
     private Double total_price;
 
-    private Double deposit;
+    private Double rental_fee;
+    private Double service_fee = 0.0;
 
     @Enumerated(EnumType.STRING)
     private EBookingStatus status;
