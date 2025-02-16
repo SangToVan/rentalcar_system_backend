@@ -6,8 +6,9 @@ import lombok.Builder;
 import java.util.Date;
 
 @Builder
-public record AddTransactionRequestDTO(
-        Integer userId,
+public record TransactionRequestDTO(
+        Integer wallet_id,
+        Integer booking_id,
         Double amount,
         ETransactionType type,
         String description,

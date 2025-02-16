@@ -76,6 +76,15 @@ public class Booking  {
             orphanRemoval = true)
     private List<Payment> payments = new ArrayList<>();
 
+    @JsonIgnore
+    @OneToMany(
+            mappedBy = "booking",
+            targetEntity = Transaction.class,
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER,
+            orphanRemoval = true)
+    private List<Transaction> transactions = new ArrayList<>();
+
     @OneToOne(fetch = FetchType.EAGER, mappedBy = "booking", orphanRemoval = true)
     private Feedback feedback;
 

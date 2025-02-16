@@ -1,14 +1,9 @@
 package com.sangto.rental_car_server.service.impl;
 
-import com.sangto.rental_car_server.domain.dto.transaction.AddTransactionRequestDTO;
 import com.sangto.rental_car_server.domain.dto.wallet.WalletResponseDTO;
 import com.sangto.rental_car_server.domain.entity.User;
 import com.sangto.rental_car_server.domain.entity.Wallet;
-import com.sangto.rental_car_server.domain.enums.ETransactionType;
-import com.sangto.rental_car_server.domain.mapper.TransactionMapper;
-import com.sangto.rental_car_server.domain.mapper.WalletMapper;
 import com.sangto.rental_car_server.exception.AppException;
-import com.sangto.rental_car_server.repository.TransactionRepository;
 import com.sangto.rental_car_server.repository.UserRepository;
 import com.sangto.rental_car_server.repository.WalletRepository;
 import com.sangto.rental_car_server.response.Response;
@@ -16,7 +11,6 @@ import com.sangto.rental_car_server.service.WalletService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 

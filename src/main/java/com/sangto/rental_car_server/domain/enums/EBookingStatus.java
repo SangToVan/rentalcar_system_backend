@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public enum EBookingStatus {
-    PENDING_DEPOSIT("Pending deposit"),
+    PAID("Paid"),
     CONFIRMED("Confirmed"),
     CANCELLED("Cancelled"),
     PICK_UP("Pick up"),

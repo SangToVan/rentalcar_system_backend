@@ -10,6 +10,7 @@ import com.sangto.rental_car_server.domain.dto.user.UpdUserRequestDTO;
 import com.sangto.rental_car_server.domain.dto.user.UserDetailResponseDTO;
 import com.sangto.rental_car_server.domain.dto.user.UserResponseDTO;
 import com.sangto.rental_car_server.domain.entity.User;
+import com.sangto.rental_car_server.domain.entity.Wallet;
 import com.sangto.rental_car_server.domain.enums.EBookingStatus;
 import com.sangto.rental_car_server.domain.enums.ECarStatus;
 import com.sangto.rental_car_server.domain.enums.EUserRole;
@@ -19,6 +20,7 @@ import com.sangto.rental_car_server.exception.AppException;
 import com.sangto.rental_car_server.repository.BookingRepository;
 import com.sangto.rental_car_server.repository.CarRepository;
 import com.sangto.rental_car_server.repository.UserRepository;
+import com.sangto.rental_car_server.repository.WalletRepository;
 import com.sangto.rental_car_server.response.MetaResponse;
 import com.sangto.rental_car_server.response.Response;
 import com.sangto.rental_car_server.service.UserService;
@@ -43,6 +45,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
     private final UserRepository userRepo;
+    private final WalletRepository walletRepo;
     private final JwtTokenUtil jwtTokenUtil;
     private final BookingRepository bookingRepo;
     private final CarRepository carRepo;
@@ -65,6 +68,13 @@ public class UserServiceImpl implements UserService {
         if (findUser.isPresent()) throw new AppException("Email already existed");
 
         User newUser = userMapper.addUserRequestDTOtoUserEntity(requestDTO);
+
+        Wallet wallet = Wallet.builder()
+                .user(newUser)
+                .amount(0.0)
+                .build();
+        walletRepo.save(wallet);
+        newUser.setWallet(wallet);
 
         // Set password
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
@@ -144,7 +154,7 @@ public class UserServiceImpl implements UserService {
                         .username(user.getUsername())
                         .email(user.getEmail())
                         .phone_number(user.getPhone_number())
-                        .wallet(user.getWallet())
+                        .wallet(user.getWallet().getAmount())
                         .avatar(user.getAvatar())
                         .status(user.getStatus())
                         .role(user.getRole())

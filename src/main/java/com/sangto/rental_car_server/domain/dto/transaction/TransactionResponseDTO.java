@@ -8,6 +8,7 @@ import java.util.Date;
 
 @Builder
 public record TransactionResponseDTO(
+        Integer transaction_id,
         Double amount,
         ETransactionType type,
         ETransactionStatus status,

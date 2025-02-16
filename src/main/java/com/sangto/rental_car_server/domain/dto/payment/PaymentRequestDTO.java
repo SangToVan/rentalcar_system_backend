@@ -7,7 +7,7 @@ import lombok.Builder;
 import java.util.Date;
 
 @Builder
-public record AddPaymentRequestDTO(
+public record PaymentRequestDTO(
         Integer booking_id,
         Double amount,
         EPaymentType paymentType,

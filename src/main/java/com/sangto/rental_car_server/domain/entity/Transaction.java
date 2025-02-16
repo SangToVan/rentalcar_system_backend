@@ -1,7 +1,6 @@
 package com.sangto.rental_car_server.domain.entity;
 
 import com.sangto.rental_car_server.domain.enums.ETransactionStatus;
-import com.sangto.rental_car_server.domain.enums.EPaymentType;
 import com.sangto.rental_car_server.domain.enums.ETransactionType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,19 +24,24 @@ public class Transaction {
     @Column(name = "transaction_id")
     private Integer id;
 
-    @ManyToOne(targetEntity = Wallet.class, fetch = FetchType.EAGER)
+    @ManyToOne(targetEntity = Wallet.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "wallet_id", referencedColumnName = "wallet_id")
     private Wallet wallet;
+
+    @ManyToOne(targetEntity = Booking.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "booking_id", referencedColumnName = "booking_id")
+    private Booking booking;
 
     private Double amount;
 
     @Enumerated(EnumType.STRING)
-    private ETransactionType transaction_type;
+    private ETransactionType type;
 
     @Enumerated(EnumType.STRING)
     private ETransactionStatus status;
 
     private String description;
+    private String error_message;
 
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")

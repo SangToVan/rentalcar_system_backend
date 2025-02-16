@@ -1,6 +1,7 @@
 package com.sangto.rental_car_server.domain.entity;
 
 import com.sangto.rental_car_server.domain.enums.EPaymentMethod;
+import com.sangto.rental_car_server.domain.enums.EPaymentStatus;
 import com.sangto.rental_car_server.domain.enums.ETransactionStatus;
 import com.sangto.rental_car_server.domain.enums.EPaymentType;
 import jakarta.persistence.*;
@@ -38,7 +39,7 @@ public class Payment {
     private EPaymentMethod payment_method;
 
     @Enumerated(EnumType.STRING)
-    private ETransactionStatus status;
+    private EPaymentStatus status;
 
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")
