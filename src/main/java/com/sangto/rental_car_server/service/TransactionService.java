@@ -16,6 +16,8 @@ public interface TransactionService {
 
     MetaResponse<MetaResponseDTO, List<TransactionResponseDTO>> getListByWalletId(Integer walletId, MetaRequestDTO requestDTO, FilterTransactionByTimeRequestDTO filterDTO);
 
-    Response<TransactionResponseDTO> createTransaction(TransactionRequestDTO requestDTO);
+    Response<TransactionResponseDTO> walletTransaction(TransactionRequestDTO requestDTO);
+
+    Response<TransactionResponseDTO> bookingTransaction(TransactionRequestDTO requestDTO);
 
 }

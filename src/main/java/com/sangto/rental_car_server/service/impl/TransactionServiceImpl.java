@@ -117,7 +117,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional
-    public Response<TransactionResponseDTO> createTransaction(TransactionRequestDTO requestDTO) {
+    public Response<TransactionResponseDTO> walletTransaction(TransactionRequestDTO requestDTO) {
 
         Optional<Wallet> findWallet = walletRepo.findById(requestDTO.wallet_id());
         if (findWallet.isEmpty()) throw new AppException("Wallet is not exist");
@@ -156,7 +156,7 @@ public class TransactionServiceImpl implements TransactionService {
         Transaction saveTransaction = transactionRepo.save(transaction);
 
         return Response.successfulResponse(
-                "Transaction processed successfully",
+                "Wallet transaction processed successfully",
                 TransactionResponseDTO.builder()
                         .transaction_id(saveTransaction.getId())
                         .amount(saveTransaction.getAmount())
@@ -167,5 +167,64 @@ public class TransactionServiceImpl implements TransactionService {
                         .build()
         );
 
+    }
+
+    @Override
+    public Response<TransactionResponseDTO> bookingTransaction(TransactionRequestDTO requestDTO) {
+
+        Optional<Wallet> findUserWallet = walletRepo.findById(requestDTO.wallet_id());
+        if (findUserWallet.isEmpty()) throw new AppException("User wallet is not exist");
+        Wallet userWallet = findUserWallet.get();
+
+        Optional<Wallet> findSystemWallet = walletRepo.findById(requestDTO.wallet_id());
+        if (findSystemWallet.isEmpty()) throw new AppException("System wallet is not exist");
+        Wallet systemWallet = findSystemWallet.get();
+
+        Transaction transaction = new Transaction();
+        transaction.setWallet(userWallet);
+        transaction.setAmount(requestDTO.amount());
+        transaction.setType(requestDTO.type());
+        transaction.setDescription(requestDTO.description());
+        transaction.setTransaction_date(requestDTO.transaction_date());
+
+        if (requestDTO.booking_id() != null) {
+            Booking booking = bookingRepo.findById(requestDTO.booking_id()).orElseThrow(() -> new AppException("Booking not found"));
+            transaction.setBooking(booking);
+        }
+
+        try {
+            if (requestDTO.type() == ETransactionType.CREDIT) {
+                systemWallet.setAmount(systemWallet.getAmount() - requestDTO.amount());
+                userWallet.setAmount(userWallet.getAmount() + requestDTO.amount());
+            } else if (requestDTO.type() == ETransactionType.DEBIT) {
+                if (userWallet.getAmount() < requestDTO.amount()) {
+                    throw new AppException("Debit credit amount exceeded");
+                }
+                systemWallet.setAmount(systemWallet.getAmount() + requestDTO.amount());
+                userWallet.setAmount(userWallet.getAmount() - requestDTO.amount());
+            }
+            walletRepo.save(userWallet);
+            walletRepo.save(systemWallet);
+            transaction.setStatus(ETransactionStatus.COMPLETED);
+        } catch (AppException e) {
+            transaction.setStatus(ETransactionStatus.FAILED);
+            transaction.setError_message(e.getMessage());
+            transactionRepo.save(transaction);
+            throw new AppException("Create transaction failed", e.getCause());
+        }
+
+        Transaction saveTransaction = transactionRepo.save(transaction);
+
+        return Response.successfulResponse(
+                "Booking transaction processed successfully",
+                TransactionResponseDTO.builder()
+                        .transaction_id(saveTransaction.getId())
+                        .amount(saveTransaction.getAmount())
+                        .type(saveTransaction.getType())
+                        .status(saveTransaction.getStatus())
+                        .description(saveTransaction.getDescription())
+                        .transaction_date(saveTransaction.getTransaction_date())
+                        .build()
+        );
     }
 }

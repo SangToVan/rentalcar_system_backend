@@ -33,6 +33,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -217,13 +218,13 @@ public class CarServiceImpl implements CarService {
         Car car = findCar.get();
 
         // Check booking
-        List<Booking> activeBookings = bookingRepo.findActiveBookingByCarId(carId);
+        List<Booking> activeBookings = bookingRepo.findActiveBookingByCarId(carId, LocalDateTime.now());
         if (!activeBookings.isEmpty() && car.getStatus() == ECarStatus.INACTIVE) {
             throw new AppException("Cannot deactivate car");
         }
 
         if (car.getStatus() == ECarStatus.ACTIVE) {
-            List<Booking> futureBookings = bookingRepo.findFutureBookingByCarId(carId);
+            List<Booking> futureBookings = bookingRepo.findFutureBookingByCarId(carId, LocalDateTime.now());
             for (Booking booking : futureBookings) {
                 booking.setStatus(EBookingStatus.CANCELLED);
             }

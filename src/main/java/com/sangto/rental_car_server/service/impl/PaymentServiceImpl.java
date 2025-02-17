@@ -84,9 +84,11 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public Response<PaymentResponseDTO> processPayment(PaymentRequestDTO requestDTO) {
+        // Tìm đơn đặt xe
         Booking booking = bookingRepo.findById(requestDTO.booking_id())
                 .orElseThrow(() -> new AppException("Booking not found"));
 
+        // Tạo hoá đơn
         Payment depositPayment = Payment.builder()
                 .booking(booking)
                 .amount(booking.getTotal_price())
@@ -96,6 +98,19 @@ public class PaymentServiceImpl implements PaymentService {
                 .transaction_date(new Date())
                 .build();
         paymentRepo.save(depositPayment);
+
+        // Tạo giao dịch thanh toán
+        User customer = booking.getCustomer();
+        Wallet wallet = walletRepo.findByUserId(customer.getId());
+        TransactionRequestDTO transactionRequestDTO = new TransactionRequestDTO(
+                wallet.getId(),
+                booking.getId(),
+                depositPayment.getAmount(),
+                ETransactionType.DEBIT,
+                "Transfer deposit for process booking",
+                depositPayment.getTransaction_date()
+        );
+        transactionService.bookingTransaction(transactionRequestDTO);
 
         booking.setStatus(EBookingStatus.PAID);
         bookingRepo.save(booking);
@@ -122,12 +137,14 @@ public class PaymentServiceImpl implements PaymentService {
             throw new AppException("Booking is already completed");
         }
 
+        //Lấy danh sách các hoá đơn theo đơn đặt xe
         List<Payment> payments = paymentRepo.getListByBookingAndStatus(bookingId, EPaymentStatus.HELD);
         Double totalRefund = 0.0;
         for (Payment payment : payments) {
             totalRefund += payment.getAmount();
         }
 
+        // Tạo hoá đơn trả lại phí đặt xe
         Payment payment = new Payment();
         payment.setBooking(booking);
         payment.setAmount(totalRefund);
@@ -137,19 +154,19 @@ public class PaymentServiceImpl implements PaymentService {
         payment.setTransaction_date(new Date());
         paymentRepo.save(payment);
 
+
+        // Tạo giao dịch hoàn trả phí
         User customer = booking.getCustomer();
         Wallet wallet = walletRepo.findByUserId(customer.getId());
-
-        // chuyển tiền 1 chiều
         TransactionRequestDTO requestDTO = new TransactionRequestDTO(
                 wallet.getId(),
                 bookingId,
                 totalRefund,
                 ETransactionType.CREDIT,
-                "Refund for cancelled booking",
+                "Refund deposit for cancelled booking",
                 payment.getTransaction_date()
         );
-        transactionService.createTransaction(requestDTO);
+        transactionService.bookingTransaction(requestDTO);
 
         booking.setStatus(EBookingStatus.CANCELLED);
         bookingRepo.save(booking);
@@ -172,6 +189,7 @@ public class PaymentServiceImpl implements PaymentService {
         if (findPayment.isEmpty()) throw new AppException("No payment found");
         Payment depositPayment = findPayment.get();
 
+        // Tạo hoá đơn thanh toán cho chủ xe
         Payment transferPayment = Payment.builder()
                 .booking(booking)
                 .amount(depositPayment.getAmount())
@@ -182,19 +200,18 @@ public class PaymentServiceImpl implements PaymentService {
                 .build();
         paymentRepo.save(transferPayment);
 
+        // Tạo giao dịch thanh toán cho chủ xe
         User carOwner = booking.getCar().getCar_owner();
         Wallet wallet = walletRepo.findByUserId(carOwner.getId());
-
-        // chuyển tiền 1 chiều
         TransactionRequestDTO requestDTO = new TransactionRequestDTO(
                 wallet.getId(),
                 bookingId,
                 transferPayment.getAmount(),
                 ETransactionType.CREDIT,
-                "Transfer for complete booking",
+                "Transfer deposit for complete booking",
                 transferPayment.getTransaction_date()
         );
-        transactionService.createTransaction(requestDTO);
+        transactionService.bookingTransaction(requestDTO);
 
         return Response.successfulResponse(
                 "Booking completed and fund transfer completed",
