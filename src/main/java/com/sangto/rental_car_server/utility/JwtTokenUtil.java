@@ -101,4 +101,20 @@ public class JwtTokenUtil {
         return signedJWT;
     }
 
+    public Boolean validateToken(String token) {
+        try {
+            // Gọi verifyToken với isRefresh = false (token thông thường)
+            verifyToken(token, false);
+            return true;
+        } catch (JOSEException | ParseException | AppException e) {
+            log.error("Token validation failed: ", e);
+            return false;
+        }
+    }
+
+    public String getEmailFromToken(String token) throws ParseException {
+        SignedJWT signedJWT = SignedJWT.parse(token);
+        return signedJWT.getJWTClaimsSet().getSubject();
+    }
+
 }

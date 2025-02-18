@@ -1,4 +1,4 @@
-package com.sangto.rental_car_server.config;
+package com.sangto.rental_car_server.config.cloudinary;
 
 import com.cloudinary.Cloudinary;
 import org.springframework.beans.factory.annotation.Value;
