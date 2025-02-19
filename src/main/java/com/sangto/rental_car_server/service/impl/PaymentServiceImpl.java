@@ -92,8 +92,8 @@ public class PaymentServiceImpl implements PaymentService {
         Payment depositPayment = Payment.builder()
                 .booking(booking)
                 .amount(booking.getTotal_price())
-                .payment_type(requestDTO.paymentType())
-                .payment_method(requestDTO.paymentMethod())
+                .type(requestDTO.paymentType())
+                .method(requestDTO.paymentMethod())
                 .status(EPaymentStatus.HELD)
                 .transaction_date(new Date())
                 .build();
@@ -120,8 +120,8 @@ public class PaymentServiceImpl implements PaymentService {
                 PaymentResponseDTO.builder()
                         .payment_id(depositPayment.getId())
                         .amount(depositPayment.getAmount())
-                        .paymentType(depositPayment.getPayment_type())
-                        .paymentMethod(depositPayment.getPayment_method())
+                        .paymentType(depositPayment.getType())
+                        .paymentMethod(depositPayment.getMethod())
                         .status(depositPayment.getStatus())
                         .transaction_date(depositPayment.getTransaction_date())
                         .build()
@@ -138,7 +138,7 @@ public class PaymentServiceImpl implements PaymentService {
         }
 
         //Lấy danh sách các hoá đơn theo đơn đặt xe
-        List<Payment> payments = paymentRepo.getListByBookingAndStatus(bookingId, EPaymentStatus.HELD);
+        List<Payment> payments = paymentRepo.findAllByBookingIdAndStatus(bookingId, EPaymentStatus.HELD);
         Double totalRefund = 0.0;
         for (Payment payment : payments) {
             totalRefund += payment.getAmount();
@@ -148,8 +148,8 @@ public class PaymentServiceImpl implements PaymentService {
         Payment payment = new Payment();
         payment.setBooking(booking);
         payment.setAmount(totalRefund);
-        payment.setPayment_type(EPaymentType.REFUND);
-        payment.setPayment_method(EPaymentMethod.WALLET);
+        payment.setType(EPaymentType.REFUND);
+        payment.setMethod(EPaymentMethod.WALLET);
         payment.setStatus(EPaymentStatus.REFUNDED);
         payment.setTransaction_date(new Date());
         paymentRepo.save(payment);
@@ -185,7 +185,7 @@ public class PaymentServiceImpl implements PaymentService {
         if (booking.getStatus().equals(EBookingStatus.PAID)) {
             throw new AppException("Booking is not in a valid state for complete payment");
         }
-        Optional<Payment> findPayment = paymentRepo.getByBookingAndType(bookingId, EPaymentType.RENTAL_FEE);
+        Optional<Payment> findPayment = paymentRepo.findByBookingIdAndType(bookingId, EPaymentType.RENTAL_FEE);
         if (findPayment.isEmpty()) throw new AppException("No payment found");
         Payment depositPayment = findPayment.get();
 
@@ -193,8 +193,8 @@ public class PaymentServiceImpl implements PaymentService {
         Payment transferPayment = Payment.builder()
                 .booking(booking)
                 .amount(depositPayment.getAmount())
-                .payment_type(EPaymentType.TRANSFER_TO_OWNER)
-                .payment_method(EPaymentMethod.WALLET)
+                .type(EPaymentType.TRANSFER_TO_OWNER)
+                .method(EPaymentMethod.WALLET)
                 .status(EPaymentStatus.RELEASED)
                 .transaction_date(new Date())
                 .build();

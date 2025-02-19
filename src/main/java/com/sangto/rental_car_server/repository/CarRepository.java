@@ -21,17 +21,16 @@ public interface CarRepository extends JpaRepository<Car, Integer> {
 
     @Query("SELECT DISTINCT c FROM Car c " + "JOIN FETCH c.car_owner co "
             + "LEFT JOIN FETCH c.images i "
-            + "LEFT JOIN FETCH c.location l "
             + "WHERE co.id = :ownerId "
-            + "AND CONCAT(c.name,' ',c.brand,' ',c.model,' ',l.address) LIKE %:keyword%")
+            + "AND CONCAT(c.name,' ',c.brand,' ',c.model,' ',c.address) LIKE %:keyword%")
     Page<Car> getListCarByOwnerWithKeyword(@Param(("ownerId"))Integer ownerId, @Param(("keyword"))String keyword, Pageable pageable);
 
     Optional<Car> getCarById(Integer id);
 
     @Query(
             value =
-                    "SELECT * FROM cars c LEFT JOIN FETCH c.location l \n"
-                            + "WHERE `c.status` = 'ACTIVE' AND l.address LIKE %:address% AND c.car_id NOT IN (\n"
+                    "SELECT * FROM cars c\n"
+                            + "WHERE `c.status` = 'ACTIVE' AND c.address LIKE %:address% AND c.car_id NOT IN (\n"
                             + "\t\t\t\t\tSELECT b.car_id FROM bookings b \n"
                             + "                    WHERE b.`status` != 'COMPLETED' AND b.`status` != 'CANCELLED' \n"
                             + "\t\t\t\t\t\tAND ((b.end_date >= :endTime AND b.start_date <= :endTime) \n"
@@ -59,7 +58,10 @@ public interface CarRepository extends JpaRepository<Car, Integer> {
             @Param("startTime")String start_time,
             @Param("endTime")String end_time);
 
-    List<Car> getListCarByOwner(Integer ownerId);
+    @Query("SELECT DISTINCT c FROM Car c " + "JOIN FETCH c.car_owner co "
+            + "LEFT JOIN FETCH c.images i "
+            + "WHERE co.id = :ownerId")
+    List<Car> getListCarByOwner(@Param(("ownerId"))Integer ownerId);
 
     int countAllBy();
 }

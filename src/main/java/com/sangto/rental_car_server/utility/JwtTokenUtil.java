@@ -113,8 +113,21 @@ public class JwtTokenUtil {
     }
 
     public String getEmailFromToken(String token) throws ParseException {
+        // Nếu token có tiền tố "Bearer ", loại bỏ tiền tố đó
+        if (token.startsWith(BEARER_TOKEN)) {
+            token = token.substring(BEARER_TOKEN.length());
+        }
         SignedJWT signedJWT = SignedJWT.parse(token);
         return signedJWT.getJWTClaimsSet().getSubject();
     }
 
+    public String getAccountId(String bearerToken) throws ParseException {
+        // Nếu token có tiền tố "Bearer ", loại bỏ tiền tố đó
+        if (bearerToken.startsWith(BEARER_TOKEN)) {
+            bearerToken = bearerToken.substring(BEARER_TOKEN.length());
+        }
+        SignedJWT signedJWT = SignedJWT.parse(bearerToken);
+        // Lấy claim "id" dưới dạng String
+        return signedJWT.getJWTClaimsSet().getStringClaim("id");
+    }
 }

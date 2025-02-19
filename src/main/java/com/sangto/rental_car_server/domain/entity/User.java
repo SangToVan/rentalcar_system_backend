@@ -47,11 +47,12 @@ public class User implements UserDetails {
 
     private String citizen_id;
 
-    @ManyToOne(
-            targetEntity = Location.class,
-            fetch = FetchType.LAZY)
-    @JoinColumn(name = "location_id", referencedColumnName = "location_id", nullable = true)
-    private Location location;
+//    @ManyToOne(
+//            targetEntity = Location.class,
+//            fetch = FetchType.LAZY)
+//    @JoinColumn(name = "location_id", referencedColumnName = "location_id", nullable = true)
+//    private Location location;
+    private String address;
 
     private String driving_license;
 
@@ -75,7 +76,7 @@ public class User implements UserDetails {
 
     @JsonIgnore
     @OneToMany(
-            mappedBy = "user",
+            mappedBy = "customer",
             targetEntity = Booking.class,
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,

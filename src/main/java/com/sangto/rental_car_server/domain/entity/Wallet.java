@@ -35,7 +35,7 @@ public class Wallet {
     private Date updated_at;
 
     @OneToMany(
-            mappedBy = "wallet_id",
+            mappedBy = "wallet",
             targetEntity = Transaction.class,
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,

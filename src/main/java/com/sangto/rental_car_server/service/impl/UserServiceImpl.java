@@ -37,7 +37,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -124,7 +123,7 @@ public class UserServiceImpl implements UserService {
 
         user.setStatus(EUserStatus.INACTIVE);
 
-        bookingRepo.findAllByUserId(user.getId()).forEach(booking -> {
+        bookingRepo.findAllByCustomerId(user.getId()).forEach(booking -> {
             booking.setStatus(EBookingStatus.CANCELLED);
             bookingRepo.save(booking);
         });

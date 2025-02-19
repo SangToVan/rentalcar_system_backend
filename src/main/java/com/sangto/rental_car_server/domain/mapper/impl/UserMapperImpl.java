@@ -6,8 +6,8 @@ import com.sangto.rental_car_server.domain.dto.user.UpdUserRequestDTO;
 import com.sangto.rental_car_server.domain.dto.user.UserDetailResponseDTO;
 import com.sangto.rental_car_server.domain.dto.user.UserResponseDTO;
 import com.sangto.rental_car_server.domain.entity.User;
+import com.sangto.rental_car_server.domain.entity.Wallet;
 import com.sangto.rental_car_server.domain.enums.EUserRole;
-import com.sangto.rental_car_server.domain.mapper.LocationMapper;
 import com.sangto.rental_car_server.domain.mapper.UserMapper;
 import com.sangto.rental_car_server.utility.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,6 @@ import java.util.Date;
 public class UserMapperImpl implements UserMapper {
 
     private final JwtTokenUtil jwtTokenUtil;
-    private final LocationMapper locationMapper;
 
     @Override
     public RegisterUserResponseDTO toRegisterUserResponseDTO(User entity) {
@@ -39,9 +38,10 @@ public class UserMapperImpl implements UserMapper {
                 .birthday(entity.getBirthday())
                 .citizen_id(entity.getCitizen_id())
                 .phone_number(entity.getPhone_number())
-                .location(locationMapper.toLocationResponseDTO(entity.getLocation()))
+//                .location(locationMapper.toLocationResponseDTO(entity.getLocation()))
+                .address(entity.getAddress())
                 .driving_license(entity.getDriving_license())
-                .wallet(entity.getWallet())
+                .wallet(entity.getWallet().getAmount())
                 .created_at(entity.getCreated_at())
                 .updated_at(entity.getUpdated_at())
                 .status(entity.getStatus())
@@ -57,7 +57,7 @@ public class UserMapperImpl implements UserMapper {
                 .username(entity.getUsername())
                 .email(entity.getEmail())
                 .phone_number(entity.getPhone_number())
-                .wallet(entity.getWallet())
+                .wallet(entity.getWallet().getAmount())
                 .status(entity.getStatus())
                 .avatar(entity.getAvatar())
                 .role(entity.getRole())
@@ -74,12 +74,12 @@ public class UserMapperImpl implements UserMapper {
                 .role(EUserRole.valueOf(requestDTO.role()))
                 .birthday(null)
                 .citizen_id(null)
-                .location(null)
+                .address(null)
                 .driving_license(null)
                 .created_at(new Date())
                 .updated_at(null)
                 .status(null)
-                .wallet(0.0)
+                .wallet(new Wallet())
                 .build();
     }
 
@@ -91,7 +91,7 @@ public class UserMapperImpl implements UserMapper {
         oldUser.setCitizen_id(requestDTO.citizen_id());
         oldUser.setAvatar(requestDTO.avatar());
         oldUser.setPhone_number(requestDTO.phone_number());
-        oldUser.setLocation(locationMapper.locationRequestDTOtoLocationEntity(requestDTO.location()));
+        oldUser.setAddress(requestDTO.address());
         oldUser.setDriving_license(requestDTO.driving_license());
 
         return oldUser;

@@ -2,7 +2,6 @@ package com.sangto.rental_car_server.domain.entity;
 
 import com.sangto.rental_car_server.domain.enums.EPaymentMethod;
 import com.sangto.rental_car_server.domain.enums.EPaymentStatus;
-import com.sangto.rental_car_server.domain.enums.ETransactionStatus;
 import com.sangto.rental_car_server.domain.enums.EPaymentType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,10 +32,10 @@ public class Payment {
     private Double amount;
 
     @Enumerated(EnumType.STRING)
-    private EPaymentType payment_type;
+    private EPaymentType type;
 
     @Enumerated(EnumType.STRING)
-    private EPaymentMethod payment_method;
+    private EPaymentMethod method;
 
     @Enumerated(EnumType.STRING)
     private EPaymentStatus status;

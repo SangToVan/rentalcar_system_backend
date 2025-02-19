@@ -1,7 +1,6 @@
 package com.sangto.rental_car_server.domain.dto.car;
 
 import com.sangto.rental_car_server.domain.dto.image.ImageResponseDTO;
-import com.sangto.rental_car_server.domain.dto.location.LocationRequestDTO;
 import com.sangto.rental_car_server.domain.enums.ECarStatus;
 import lombok.Builder;
 
@@ -13,7 +12,8 @@ public record CarResponseDTO(
         String name,
         String brand,
         String model,
-        LocationRequestDTO location,
+//        LocationRequestDTO location,
+        String address,
         Double rating,
         ECarStatus status,
         Double price_per_day,

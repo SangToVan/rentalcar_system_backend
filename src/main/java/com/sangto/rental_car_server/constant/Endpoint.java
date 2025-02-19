@@ -51,7 +51,7 @@ public class Endpoint {
             public static final String BASE = PREFIX + "/bookings";
             public static final String LIST_FOR_USER = BASE + "/own";
             public static final String DETAILS = BASE + "/{id}";
-            public static final String CONFIRM_DEPOSIT = BASE + "/{id}/confirm-deposit";
+            public static final String CONFIRM_BOOKING = BASE + "/{id}/confirm-booking";
             public static final String CONFIRM_PICK_UP = BASE + "/{id}/confirm-pickup";
             public static final String CONFIRM_PAYMENT = BASE + "/{id}/confirm-payment";
             public static final String CANCELLED_BOOKING = BASE + "/{id}/cancel";
@@ -61,6 +61,10 @@ public class Endpoint {
 
         public static final class Transaction {
             public static final String BASE = PREFIX + "/transactions";
+        }
+
+        public static final class Payment {
+            public static final String BASE = PREFIX + "/payments";
         }
 
         public static final class Feedback {

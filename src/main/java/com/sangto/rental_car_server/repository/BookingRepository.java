@@ -21,7 +21,7 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
     @Query("SELECT b FROM Booking b " + "JOIN FETCH b.car c "
             + "JOIN FETCH b.customer u "
             + "JOIN FETCH b.payments p "
-            + "WHERE u.id = :userId AND CONCAT(b.status,' ',p.payment_method) LIKE %:keyword%")
+            + "WHERE u.id = :userId AND CONCAT(b.status,' ',p.method) LIKE %:keyword%")
     Page<Booking> getListBookingByUserIdWithKeyword(@Param("userId")Integer userId,
                                                     @Param("keyword")String keyword,
                                                     Pageable pageable);
@@ -29,7 +29,7 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
     @Query("SELECT b FROM Booking b " + "JOIN FETCH b.car c " + "JOIN FETCH b.customer cus " + "WHERE c.id = :carId")
     Page<Booking> getListBookingByCarId(@Param("carId")Integer carId, Pageable pageable);
 
-    List<Booking> findAllByUserId(Integer userId);
+    List<Booking> findAllByCustomerId(Integer userId);
 
     @Query("SELECT b FROM Booking b WHERE b.status = :status AND b.start_date < :startDate")
     List<Booking> findByStatusAndStartDateTime(@Param("status")EBookingStatus status, @Param("startDate")LocalDateTime startDateTime);

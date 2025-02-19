@@ -1,7 +1,6 @@
 package com.sangto.rental_car_server.domain.dto.car;
 
 import com.sangto.rental_car_server.domain.dto.image.UpdImageRequestDTO;
-import com.sangto.rental_car_server.domain.dto.location.LocationRequestDTO;
 import lombok.Builder;
 
 import java.util.List;
@@ -14,7 +13,8 @@ public record UpdCarRequestDTO(
         List<UpdImageRequestDTO> images,
         String description,
         String terms_of_use,
-        LocationRequestDTO location,
+//        LocationRequestDTO location,
+        String address,
         Double price_per_day
 ) {
 }

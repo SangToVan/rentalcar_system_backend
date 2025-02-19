@@ -1,7 +1,6 @@
 package com.sangto.rental_car_server.domain.dto.user;
 
 import com.sangto.rental_car_server.constant.TimeFormatConstant;
-import com.sangto.rental_car_server.domain.dto.location.LocationRequestDTO;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.Pattern;
@@ -19,7 +18,8 @@ public record UpdUserRequestDTO(
         String avatar,
         @Pattern(regexp = "^0[0-9]{7,}$", message = "Phone number must start with 0 and contain at least 8 digits")
         String phone_number,
-        LocationRequestDTO location,
+//        LocationRequestDTO location,
+        String address,
         String driving_license
 ) {
 }

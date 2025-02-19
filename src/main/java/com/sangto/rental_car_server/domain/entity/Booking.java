@@ -29,7 +29,7 @@ public class Booking  {
     private Integer id;
 
     @ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @JoinColumn(name = "customer_id", referencedColumnName = "user_id")
     private User customer;
 
     @ManyToOne(targetEntity = Car.class, fetch = FetchType.EAGER)

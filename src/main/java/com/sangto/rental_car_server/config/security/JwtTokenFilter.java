@@ -37,14 +37,13 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (authHeader != null && authHeader.startsWith(BEARER_TOKEN)) {
+        if (authHeader == null || !authHeader.startsWith(BEARER_TOKEN)) {
             filterChain.doFilter(request, response);
             return;
         }
         if (this.isByPassRequest(request)) {
             filterChain.doFilter(request, response);
         }
-        assert authHeader != null;
         final String jwt = authHeader.substring(BEARER_TOKEN.length());
         if (SecurityContextHolder.getContext().getAuthentication() == null && jwtTokenUtil.validateToken(jwt)) {
             try {

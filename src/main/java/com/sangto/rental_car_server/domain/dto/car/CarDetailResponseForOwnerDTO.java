@@ -1,7 +1,6 @@
 package com.sangto.rental_car_server.domain.dto.car;
 
 import com.sangto.rental_car_server.domain.dto.image.ImageResponseDTO;
-import com.sangto.rental_car_server.domain.dto.location.LocationRequestDTO;
 import com.sangto.rental_car_server.domain.enums.ECarStatus;
 import com.sangto.rental_car_server.domain.enums.ECarTransmission;
 import com.sangto.rental_car_server.domain.enums.EFuelType;
@@ -28,7 +27,8 @@ public record CarDetailResponseForOwnerDTO(
         List<ImageResponseDTO> images,
         String description,
         String terms_of_use,
-        LocationRequestDTO location,
+//        LocationRequestDTO location,
+        String address,
         Double price_per_day,
         Boolean availability,
         ECarStatus status,

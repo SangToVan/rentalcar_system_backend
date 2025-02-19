@@ -53,11 +53,12 @@ public class Car {
     private String description;
     private String terms_of_use;
 
-    @ManyToOne(
-            targetEntity = Location.class,
-            fetch = FetchType.LAZY)
-    @JoinColumn(name = "location_id", referencedColumnName = "location_id", nullable = true)
-    private Location location;
+//    @ManyToOne(
+//            targetEntity = Location.class,
+//            fetch = FetchType.LAZY)
+//    @JoinColumn(name = "location_id", referencedColumnName = "location_id", nullable = true)
+//    private Location location;
+    private String address;
 
     private Double price_per_day;
     private Boolean availability;
